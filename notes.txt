@@ -1,0 +1,17 @@
+narazie zostań przy resamplingu BICUBIC
+mapped_ids zachowuje indkesy LEGO kolorów na odpowiednich miejscach, mapped_hex oraz maped_rgb kolory po komputerowemu
+
+a i wypierdol janka placeholdera; zamiast tego użyj state jak już musisz. powiększ też okno, żeby wypierdalało na całe i nie było problemem z oknem. tak jakby wyjebane
+może podgląd tylko rozmiaru? w sensie wiesz, żeby było widać jaki jest rozmiar piksela
+
+przetestuj sobie może rightclick_menu dla jakiegoś guzicka [i], który wyjaśnia amount i sigma parametry
+teraz już z górki cnie
+
+eh małolat będzie dobrze
+
+
+todo:
+siatkę mini pikseli - może zrobisz to jako osobną funkcję i będziesz wywoływał przy generowaniu powiększonego zdjęcia jeżeli przybliżenie jakieś tam
+
+pobaw się i odpowiednio podawaj picked_color ctk.StringVar
+wtedy będzie w stanie zrobić podświetlanie wybranego koloru na liście 
