@@ -109,6 +109,11 @@ class CTkImageViewer(ctk.CTkFrame):
             "<3>",
             self.check_color
         )
+
+        self.canvas.bind(
+            "<2>",
+            self.recenter_view
+        )
     
     # -------------------
     # Obraz
@@ -167,12 +172,18 @@ class CTkImageViewer(ctk.CTkFrame):
         if self._image is None:
             return
         
-        self._zoom_index = self.ZOOMS.index(1)
+        self._zoom_index = self.ZOOMS.index(4)
         
         self._camera_x = self._image.width / 2
         self._camera_y = self._image.height / 2
         
         self._render()
+
+    def recenter_view(self, event):
+            self._camera_x = self._image.width / 2
+            self._camera_y = self._image.height / 2
+            
+            self._render()
      
         
     # --------------------------
@@ -460,10 +471,11 @@ class CTkImageViewer(ctk.CTkFrame):
         self.outline_layer.set_cluster(cluster)
         
         # globalna śledzona RGB żeby wiedziec jaki kolor jest wybrany mogłem zapisać tylko id kurwa co za debil
+        # update: już slędzę id
         picked_color_id = self.mapped_ids[py, px]
         self.global_color_picked_id.set(int(picked_color_id))
 
-        
+
     # --------------------------
     # resize okna
     

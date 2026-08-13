@@ -45,7 +45,7 @@ class ResultsView(ctk.CTkFrame):
                                      width=50, height=50, 
                                      image=save_ctkimage,
                                      text=None, 
-                                     command=self._on_save
+                                     command=self._on_save,
                                      corner_radius=6)
         _save_button.grid(row=1, column=0, sticky="ns", pady=6)
 
@@ -55,4 +55,4 @@ class ResultsView(ctk.CTkFrame):
 
 
     def _on_recenter(self):
-        pass
+        self._viewer.recenter_view(None)
