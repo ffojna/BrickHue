@@ -87,6 +87,17 @@ class App(ctk.CTk):
         
     def show_menu(self):
         view = MenuView(master=self.container, on_pick_input_file=self._pick_filename, on_generate=self._on_generate)
+
+        if self.current_view is not None:
+            self.current_view.destroy()
+
+        self._set_sidelist(ctk.CTkFrame(self, bg_color="#323232"))
+
+        if IMAGE_DATA["pil_image"] is not None:
+            IMAGE_DATA["filepath"] = None
+            IMAGE_DATA["width"] = 1
+            IMAGE_DATA["height"] = 1
+            IMAGE_DATA["pil_image"] = None
         
         self._set_view(view)
         
@@ -112,7 +123,7 @@ class App(ctk.CTk):
         mapped_ids, _, mapped_rgb = self._legoify.generate_lego_image(IMAGE_DATA["pil_image"], sigma=sigma, amount=amount, target_size=(target_w, target_h))
         generated_image_rgb = Image.fromarray((mapped_rgb * 255).astype(np.uint8))
         
-        results_view = ResultsView(master=self.container, start_image=generated_image_rgb, mapped_ids=mapped_ids, global_color_picked_id=self.global_picked_color_id)
+        results_view = ResultsView(master=self.container, start_image=generated_image_rgb, mapped_ids=mapped_ids, global_color_picked_id=self.global_picked_color_id, on_back=self.show_menu)
         
         unique_ids, counts = np.unique(mapped_ids, return_counts=True)
         color_records = [self._legoify.decode_color_from_id(id) for id in unique_ids]

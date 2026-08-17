@@ -1,6 +1,6 @@
 import customtkinter as ctk
-import tkinter as tk
 from PIL import Image
+import numpy as np
 
 from ..image.image_viewer import CTkImageViewer
 from ..utils import resource_path
@@ -8,12 +8,14 @@ from ..utils import resource_path
 
 class ResultsView(ctk.CTkFrame):
     
-    def __init__(self, master, start_image: Image, mapped_ids, global_color_picked_id):
+    def __init__(self, master, start_image: Image, mapped_ids, global_color_picked_id, on_back):
         
         super().__init__(master)
         
         self._viewer = CTkImageViewer(self, global_color_picked_id, mapped_ids)
         self._viewer.open(start_image)
+
+        self._on_back = on_back
         
         self._build_ui()
         
@@ -31,28 +33,42 @@ class ResultsView(ctk.CTkFrame):
 
         recenter_image = Image.open(resource_path("assets/icons/recenter.png"))
         recenter_ctkimage = ctk.CTkImage(light_image=recenter_image, dark_image=recenter_image, size=(40, 40))
-        _recenter_button = ctk.CTkButton(self._button_pane, 
+        recenter_button = ctk.CTkButton(self._button_pane, 
                                          width=50, height=50, 
                                          image=recenter_ctkimage,
                                          text=None,
                                          command=self._on_recenter,
                                          corner_radius=6)
-        _recenter_button.grid(row=0, column=0, sticky="ns", pady=6)
+        recenter_button.grid(row=0, column=0, sticky="ns", pady=6)
 
         save_image = Image.open(resource_path("assets/icons/save.png"))
         save_ctkimage = ctk.CTkImage(light_image=save_image, dark_image=save_image, size=(40, 40))
-        _save_button = ctk.CTkButton(self._button_pane, 
+        save_button = ctk.CTkButton(self._button_pane, 
                                      width=50, height=50, 
                                      image=save_ctkimage,
                                      text=None, 
                                      command=self._on_save,
                                      corner_radius=6)
-        _save_button.grid(row=1, column=0, sticky="ns", pady=6)
+        save_button.grid(row=1, column=0, sticky="ns", pady=6)
+
+        back_button = ctk.CTkButton(self._button_pane,
+                                    width=50, height=50,
+                                    text="Powrót",
+                                    command=self._on_back,
+                                    corner_radius=6)
+        back_button.grid(row=2, column=0, sticky="ns", pady=6)
 
 
+    # Zapisz zdjęcie i dane potrzebne do otwarcia go znowu bez ponownej analizy
     def _on_save(self):
+        # stwórz popup, który pyta o lokalizację pliku i nazwę
+        # przed zapisaniem sprawdź, czy już istnieje plik o takiej nazwie
+        # jeżeli tak zapytaj użytkownika, czy chce nadpisać ? usuń i zapisz na nowo pod tą nazwą : return
+        # zapisz przez np.save do npy, zdjęcie pewnie PIL ma jakąś metodę na to < CHECK
         pass
 
 
+    # wycentruj widok ImageViewer
     def _on_recenter(self):
         self._viewer.recenter_view(None)
+
