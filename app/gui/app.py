@@ -68,7 +68,7 @@ class App(ctk.CTk):
             self.current_sidelist.destroy()
             
         self.current_sidelist = sidelist
-        self.current_sidelist.pack(fill="both", expand=True)
+        self.side_list.grid(row=0, rowspan=2, column=1, sticky="nsew")
     
     
     def _load_image(self):
@@ -91,6 +91,7 @@ class App(ctk.CTk):
         if self.current_view is not None:
             self.current_view.destroy()
 
+        # nie wiem dlaczego, ale nie mogę zrestartować sidelisty w poniższy sposób hmmmmmmmmmmm
         self._set_sidelist(ctk.CTkFrame(self, bg_color="#323232"))
 
         if IMAGE_DATA["pil_image"] is not None:
