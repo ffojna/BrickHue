@@ -8,9 +8,11 @@ from ..utils import resource_path
 
 class ResultsView(ctk.CTkFrame):
     
-    def __init__(self, master, start_image: Image, mapped_ids, global_color_picked_id, on_back):
+    def __init__(self, master, start_image: Image, mapped_ids, global_color_picked_id, on_back, logger_function):
         
         super().__init__(master)
+        
+        self._log = logger_function
         
         self._viewer = CTkImageViewer(self, global_color_picked_id, mapped_ids)
         self._viewer.open(start_image)
@@ -61,11 +63,22 @@ class ResultsView(ctk.CTkFrame):
 
     # Zapisz zdjęcie i dane potrzebne do otwarcia go znowu bez ponownej analizy
     def _on_save(self):
-        # stwórz popup, który pyta o lokalizację pliku i nazwę
-        # przed zapisaniem sprawdź, czy już istnieje plik o takiej nazwie
-        # jeżeli tak zapytaj użytkownika, czy chce nadpisać ? usuń i zapisz na nowo pod tą nazwą : return
-        # zapisz przez np.save do npy, zdjęcie pewnie PIL ma jakąś metodę na to < CHECK
-        pass
+        
+        starting_dir = resource_path("saved_images/")
+        picked_filename = ctk.filedialog.asksaveasfilename(title="Zapisz jako...", initialdir=starting_dir)
+        
+        # wyrzuć rozszerzenie, jeżeli użytkownik wrzuci
+        if "." in picked_filename:
+            picked_filename = picked_filename.split(".", 1)[0]
+            
+        # picked_filename jest czysty dla bitowego dodaj .dat, a do zdjęciowego .png / bestratny
+        data_filename = picked_filename + ".dat"
+        image_filename = picked_filename + ".png"
+        
+        self._viewer.mapped_ids.tofile(data_filename)
+        self._viewer._image.save(image_filename)
+        
+        self._log(f"Zapisano obraz do pliku {picked_filename}")
 
 
     # wycentruj widok ImageViewer

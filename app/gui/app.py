@@ -124,7 +124,7 @@ class App(ctk.CTk):
         mapped_ids, _, mapped_rgb = self._legoify.generate_lego_image(IMAGE_DATA["pil_image"], sigma=sigma, amount=amount, target_size=(target_w, target_h))
         generated_image_rgb = Image.fromarray((mapped_rgb * 255).astype(np.uint8))
         
-        results_view = ResultsView(master=self.container, start_image=generated_image_rgb, mapped_ids=mapped_ids, global_color_picked_id=self.global_picked_color_id, on_back=self.show_menu)
+        results_view = ResultsView(master=self.container, start_image=generated_image_rgb, mapped_ids=mapped_ids, global_color_picked_id=self.global_picked_color_id, on_back=self.show_menu, logger_function=self._log)
         
         unique_ids, counts = np.unique(mapped_ids, return_counts=True)
         color_records = [self._legoify.decode_color_from_id(id) for id in unique_ids]
